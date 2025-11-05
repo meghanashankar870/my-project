@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Functional Calculator</title>
+  <style>
+    body { font-family: Arial, sans-serif; display: flex; justify-content: center; padding-top: 50px; }
+    .calculator { border: 1px solid #ccc; padding: 20px; width: 220px; }
+    input { width: 100%; height: 40px; text-align: right; margin-bottom: 10px; font-size: 18px; }
+    button { width: 50px; height: 50px; font-size: 18px; margin: 2px; }
+  </style>
+</head>
+<body>
+
+<div class="calculator">
+  <input type="text" id="display" disabled>
+  <br>
+  <button onclick="appendNumber('7')">7</button>
+  <button onclick="appendNumber('8')">8</button>
+  <button onclick="appendNumber('9')">9</button>
+  <button onclick="chooseOperation('/')">/</button>
+  <br>
+  <button onclick="appendNumber('4')">4</button>
+  <button onclick="appendNumber('5')">5</button>
+  <button onclick="appendNumber('6')">6</button>
+  <button onclick="chooseOperation('*')">*</button>
+  <br>
+  <button onclick="appendNumber('1')">1</button>
+  <button onclick="appendNumber('2')">2</button>
+  <button onclick="appendNumber('3')">3</button>
+  <button onclick="chooseOperation('-')">-</button>
+  <br>
+  <button onclick="appendNumber('0')">0</button>
+  <button onclick="appendNumber('.')">.</button>
+  <button onclick="calculate()">=</button>
+  <button onclick="chooseOperation('+')">+</button>
+  <br>
+  <button onclick="clearDisplay()" style="width: 100%;">C</button>
+</div>
+
+<script>
+  let current = '';
+  let previous = '';
+  let operation = null;
+
+  const display = document.getElementById('display');
+
+  function appendNumber(number) {
+    if(number === '.' && current.includes('.')) return; // prevent multiple decimals
+    current += number;
+    updateDisplay();
+  }
+
+  function chooseOperation(op) {
+    if(current === '' && previous !== '') {
+      operation = op; // change operation if user clicks another operator
+      return;
+    }
+    if(current === '') return; // do nothing if no numb
+    if(previous !== '') {
+      // calculate previous operation first
+      calculate();
+    }
+    operation = op;
+    previous = current;
+    current = '';
+  }
+
+  function calculate() {
+    if(previous === '' || current === '' || !operation) return;
+
+    const prev = parseFloat(previous);
+    const curr = parseFloat(current);
+    let result;
+
+    switch(operation) {
+      case '+': result = prev + curr; break;
+      case '-': result = prev - curr; break;
+      case '*': result = prev * curr; break;
+      case '/': result = prev / curr; break;
+      default: return;
+    }
+
+    current = result.toString();
+    previous = '';
+    operation = null;
+    updateDisplay();
+  }
+
+  function clearDisplay() {
+    current = '';
+    previous = '';
+    operation = null;
+    updateDisplay();
+  }
+
+  function updateDisplay() {
+    display.value = current;
+  }
+</script>
+
+</body>
+</html>
