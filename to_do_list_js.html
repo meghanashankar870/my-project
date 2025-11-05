@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>To-Do List</title>
+</head>
+<body>
+  <h1>To-Do List</h1>
+  <input type="text" id="taskInput" placeholder="Enter a task" />
+  <button id="addBtn">Add Task</button>
+
+  <ul id="taskList"></ul>
+
+  <script>
+    const input = document.getElementById("taskInput"); //If you want to select multiple elements, use getElementsByClassName or querySelectorAll instead.//
+    const addBtn = document.getElementById("addBtn");
+    const taskList = document.getElementById("taskList");
+
+    let tasks = [];
+
+    addBtn.addEventListener("click", () => {
+      const task = input.value.trim();   //.trim() removes extra spaces at the start and end// 
+      if(task) {  //Checks if the user typed something non-empty.//
+        tasks.push(task); 
+        input.value = "";  //Clears the input box after adding the task.Makes it ready for the user to type the next task.//
+        renderTasks();
+      }
+    });
+
+    function renderTasks() {
+      taskList.innerHTML = "";
+      tasks.forEach((task, index) => {
+        const li = document.createElement("li");
+        li.textContent = task + " ";
+        
+        const deleteBtn = document.createElement("button");
+        deleteBtn.textContent = "Delete";
+        deleteBtn.addEventListener("click", () => {
+          tasks.splice(index, 1);
+          renderTasks();
+        });
+
+        li.appendChild(deleteBtn); //Adds the Delete button inside the <li> element, so each task has its own button.//
+        taskList.appendChild(li);  //Adds the <li> (task + delete button) to the <ul> in the HTML.//
+      });
+    }
+  </script>
+</body>
+</html>
