@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Library System</title>
+</head>
+<body>
+  <h2>Library Book Manager</h2>
+  <input type="text" id="title" placeholder="Book Title">
+  <input type="text" id="author" placeholder="Author">
+  <button id="addBtn">Add Book</button>
+
+  <ul id="bookList"></ul>
+
+  <script>
+    class Book {
+      #id;//this is an private field acceess only inside the class
+      constructor(title, author) {//constructor with parameter
+        this.title = title;//here this is used to set title property of the current object
+        this.author = author;
+        this.#id = Math.floor(Math.random() * 1000);//to generate the random private id below 1000
+      }
+
+      getInfo() {  //regular method or public method
+        return `${this.title} by ${this.author}`;//this will fetch the details and print
+      }
+
+      get id() {  //get method to get id
+        return this.#id; //this will return the particular private id
+      }
+    }
+
+    class Library {
+      constructor() {
+        this.books = [];//This just initializes an empty array to store Book objects.
+      }
+
+      addBook(book) {
+        this.books.push(book); //this will adds the new book to the array and then calls displayBooks() and display
+        this.displayBooks();
+      }
+
+      displayBooks() {
+        const list = document.getElementById('bookList');
+        list.innerHTML = '';
+        //The arrow function runs for each book, creates an <li> element, fills it with the book’s info and ID, and adds it to the list
+        this.books.forEach(b => {
+          const li = document.createElement('li');
+          li.textContent = `${b.getInfo()} (ID: ${b.id})`;
+          list.appendChild(li); //adds to the list
+        });
+      }
+    }
+    //This creates a new Library object that will manage all the books
+    const library = new Library();
+    //This listens for the button click → then reads the values → creates a new Book → adds it to the library.
+    document.getElementById('addBtn').addEventListener('click', () => {
+      const title = document.getElementById('title').value;
+      const author = document.getElementById('author').value;
+      if (title && author) {
+        const book = new Book(title, author);
+        library.addBook(book);
+      }
+    });
+  </script>
+</body>
+</html>

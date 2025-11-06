@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bank Account Example</title>
+</head>
+<body>
+    <h1>creates a Bank Account system in JavaScript using OOP concepts —</h1>
+  <h2>Bank Account Example (see Console)</h2>
+
+  <script>
+    class BankAccount {
+      #balance;   //it prrotects internal data
+
+      constructor(owner, initialAmount) {
+        this.owner = owner; //this-->to access object propperties //Store the value of the parameter owner inside the new object’s property called owner
+        this.#balance = initialAmount;//Set the private property #balance of this object to the value of initialAmount
+      }
+      //public method
+      deposit(amount) {
+        if (amount > 0) {
+          this.#balance += amount;//this refers to the current object//+= amount--->“add and assign.”
+          console.log(`Deposited ₹${amount}. New balance: ₹${this.#balance}`);
+        } else {
+          console.log("Deposit amount must be positive!");
+        }
+      }
+
+      withdraw(amount) {
+        if (amount > 0 && amount <= this.#balance) {
+          this.#balance -= amount;//sub and assign
+          console.log(`Withdrew ₹${amount}. Remaining balance: ₹${this.#balance}`);
+        } else {
+          console.log("Invalid amount or insufficient funds!");
+        }
+      }
+      //private function
+      #calculateInterest() {
+        return this.#balance * 0.05;
+      }
+      //public method uses the private one
+      showInterest() {
+        const interest = this.#calculateInterest();
+        console.log(`Interest for ${this.owner}: ₹${interest}`);
+      }
+      //read only access
+      get balance() {
+        return this.#balance;
+      }
+    }
+
+    const account = new BankAccount("Meghana", 1000); //The constructor runs automatically when you create a new object
+    account.deposit(500);
+    account.withdraw(200);
+    account.showInterest();
+    console.log(account.balance);
+  </script>
+</body>
+</html>
