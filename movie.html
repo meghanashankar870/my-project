@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>🎬 Movie Library</title>
+  <style>
+    body {
+      font-family: Arial;
+      background-color: #f0f0f0;
+      padding: 20px;
+    }
+    h2 {
+      color: #333;
+    }
+    .controls {
+      margin-bottom: 20px;
+    }
+    select, button {
+      padding: 8px;
+      margin-right: 10px;
+    }
+    .movie {
+      background: white;
+      border-radius: 8px;
+      padding: 10px;
+      margin-bottom: 10px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+    .title {
+      font-size: 18px;
+      font-weight: bold;
+    }
+    .genre, .rating {
+      color: #555;
+    }
+  </style>
+</head>
+<body>
+  <h2>🎬 My Movie Library</h2>
+
+  <div class="controls">
+    <label for="genreFilter">Filter by Genre:</label>
+    <select id="genreFilter">
+      <option value="all">All</option>
+      <option value="Action">Action</option>
+      <option value="Drama">Drama</option>
+      <option value="Comedy">Comedy</option>
+      <option value="Sci-Fi">Sci-Fi</option>   //science fiction
+    </select>
+
+    <button id="sortBtn">Sort by Rating (High → Low)</button>
+  </div>
+
+  <div id="movieList"></div>
+
+  <script>
+    // Step 1: Store movies as objects
+    const movies = [
+      { title: "Inception", genre: "Sci-Fi", rating: 8.8 },
+      { title: "Avengers", genre: "Action", rating: 8.0 },
+      { title: "Titanic", genre: "Drama", rating: 7.9 },
+      { title: "The Hangover", genre: "Comedy", rating: 7.7 },
+      { title: "Interstellar", genre: "Sci-Fi", rating: 8.6 },
+      { title: "John Wick", genre: "Action", rating: 7.9 }       //genre means categorize
+    ];
+
+    const movieList = document.getElementById("movieList");
+    const genreFilter = document.getElementById("genreFilter");
+    const sortBtn = document.getElementById("sortBtn");
+
+    // Step 2: Function to display movies                             
+    function displayMovies(list) {
+      movieList.innerHTML = ""; // clear previous
+      list.forEach(movie => {
+        const div = document.createElement("div");
+        div.classList.add("movie");
+        div.innerHTML = `
+          <div class="title">${movie.title}</div>
+          <div class="genre">Genre: ${movie.genre}</div>
+          <div class="rating">Rating: ⭐ ${movie.rating}</div>
+        `;
+        movieList.appendChild(div);
+      });
+    }
+
+    // Step 3: Filter movies by genre
+    genreFilter.addEventListener("change", function() {
+      const selectedGenre = genreFilter.value;
+      if (selectedGenre === "all") {
+        displayMovies(movies);
+      } else {
+        const filtered = movies.filter(movie => movie.genre === selectedGenre);
+        displayMovies(filtered);
+      }
+    });
+
+    // Step 4: Sort movies by rating
+    sortBtn.addEventListener("click", function() {
+      const sorted = [...movies].sort((a, b) => b.rating - a.rating);
+      displayMovies(sorted);
+    });
+
+    // Initial display
+    displayMovies(movies);
+
+
+    /*
+[ movies array ]
+     |
+     v
+[ displayMovies(list) ]
+     |
+     v
+[ Clear previous movies in container ]
+     |
+     v
+[ Loop through list ]
+     |
+     v
+[ Create <div> for each movie ]
+     |
+     v
+[ Append <div> to movieList container ]
+     |
+     v
+[ Movies visible on page ]
+
+-----------------------------
+
+[ User selects genre from dropdown ]
+           |
+           v
+[ "change" event triggered ]
+           |
+           v
+[ Get selected genre ]
+           |
+           v
+[ Is selected genre "all"? ] --Yes--> //displayMovies(movies) --> Show all movies
+        // |
+           No
+           |
+           v
+//[ Filter movies by selected genre ] --> displayMovies(filtered) --> Show filtered movies */
+
+
+  </script>
+</body>
+</html>
+

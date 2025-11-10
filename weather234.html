@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Weather Prediction App</title>
+  <style>
+    li { margin: 5px 0; }
+    button { margin-left: 10px; }
+  </style>
+</head>
+<body>
+  <h2>Weather Prediction</h2>
+
+  <!-- 1️⃣ FORM TO INPUT CITY -->
+  <form id="weatherForm">
+    <input type="text" id="city" placeholder="Enter City" required>
+    <button type="submit">Get Prediction</button>
+  </form>
+
+  <ul id="weatherList"></ul>
+
+  <script>
+    const form = document.getElementById('weatherForm');
+    const weatherList = document.getElementById('weatherList');
+
+    // Helper function to generate random weather prediction
+    function getRandomWeather() {
+      const conditions = ["Sunny", "Rainy", "Cloudy", "Windy", "Stormy", "Snowy"];
+      const temperature = Math.floor(Math.random() * 35) + 5; // 5°C to 40°C
+      const condition = conditions[Math.floor(Math.random() * conditions.length)];
+      return `${condition}, ${temperature}°C`;
+    }
+
+    // 1️⃣ FORMS & INPUT VALUES
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const city = document.getElementById('city').value;
+      if (!city) return;
+
+      // 2️⃣ DYNAMIC DOM MANIPULATION
+      const li = document.createElement('li');
+      li.textContent = `${city}: ${getRandomWeather()}`;
+
+      // Remove button
+      const removeBtn = document.createElement('button');
+      removeBtn.textContent = 'Remove';
+      removeBtn.className = 'remove-btn';
+      li.appendChild(removeBtn);
+
+      // Details button
+      const detailsBtn = document.createElement('button');
+      detailsBtn.textContent = 'Details';
+      detailsBtn.className = 'details-btn';
+      li.appendChild(detailsBtn);
+
+      weatherList.appendChild(li);
+      form.reset();
+    });
+
+    // 3️⃣ EVENT DELEGATION
+    weatherList.addEventListener('click', (e) => {
+      const target = e.target;
+      const li = target.parentElement;
+
+      if (target.classList.contains('remove-btn')) {
+        li.remove(); // remove city weather
+      }
+
+      if (target.classList.contains('details-btn')) {
+        alert(`Detailed forecast for ${li.textContent.split(':')[0]}:\n- Humidity: ${Math.floor(Math.random() * 100)}%\n- Wind Speed: ${Math.floor(Math.random() * 50)} km/h\n- Chance of Rain: ${Math.floor(Math.random() * 100)}%`);
+      }
+    });
+  </script>
+</body>
+</html>
